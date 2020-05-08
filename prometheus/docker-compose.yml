@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+
+   prom:
+     image: prom/prometheus:v2.17.1 
+     volumes:
+       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+       - prometheus_data:/prometheus
+     command: "--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus"
+     ports:
+       - 9090:9090
+
+   dbexporter-n1:
+     image: prom/mysqld-exporter:v0.12.1
+     environment:
+       DATA_SOURCE_NAME: "exporter:exp789@(192.168.1.7:3307)/porndb"
+     command: "--collect.info_schema.tables --collect.info_schema.tablestats"
+     ports: 
+       - 9104:9104
+
+   dbexporter-n2:
+     image: prom/mysqld-exporter:v0.12.1
+     environment:
+       DATA_SOURCE_NAME: "exporter:exp789@(192.168.1.7:3308)/porndb"
+     command: "--collect.info_schema.tables --collect.info_schema.tablestats"
+     ports:
+       - 9105:9104
+
+   dbexporter-n3:
+     image: prom/mysqld-exporter:v0.12.1
+     environment:
+       DATA_SOURCE_NAME: "exporter:exp789@(192.168.1.7:3309)/porndb"
+     command: "--collect.info_schema.tables --collect.info_schema.tablestats"
+     ports:
+       - 9106:9104
+
+   grafana:
+     image: grafana/grafana:6.7.3
+     volumes:
+       - grafana_data:/var/lib/grafana
+     ports:
+       - 3000:3000 
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+

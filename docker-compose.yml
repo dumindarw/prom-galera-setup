@@ -1,0 +1,62 @@
+version: '3.7'
+
+services:
+
+  # ===== MULTI-MASTER GALERA CLUSTER SETUP =====
+
+  node1:
+    image: mariadb:10.4
+    container_name: node1
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: bootx
+      MYSQL_USER: nodeuser
+      MYSQL_PASSWORD: n1234
+    volumes:
+      - ./mariadb1/data:/var/lib/mysql
+      - ./mariadb1/conf.d:/etc/mysql/mariadb.conf.d
+    ports:
+      - 3307:3306
+      - 4444:4444
+      - 4567:4567
+      - 4568:4568
+
+  node2:
+    image: mariadb:10.4
+    container_name: node2
+    restart: on-failure
+    environment:
+     MYSQL_ROOT_PASSWORD: bootx
+     MYSQL_USER: nodeuser
+     MYSQL_PASSWORD: n1234
+    volumes:
+      - ./mariadb2/data:/var/lib/mysql
+      - ./mariadb2/conf.d:/etc/mysql/mariadb.conf.d
+    ports:
+      - 3308:3306
+      - 4445:4444
+      - 4569:4567
+      - 4570:4568
+
+  node3:
+    image: mariadb:10.4
+    container_name: node3
+    restart: on-failure
+    environment:
+     MYSQL_ROOT_PASSWORD: bootx
+     MYSQL_USER: nodeuser
+     MYSQL_PASSWORD: n1234
+    volumes:
+      - ./mariadb3/data:/var/lib/mysql
+      - ./mariadb3/conf.d:/etc/mysql/mariadb.conf.d
+    ports:
+      - 3309:3306
+      - 4446:4444
+      - 4571:4567
+      - 4572:4568
+
+        #volumes:
+        #    data_1: {}
+        #    data_2: {}
+        #    data_3: {}
+
